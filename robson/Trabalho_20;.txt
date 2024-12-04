@@ -1,0 +1,96 @@
+package Trabalho_20;
+
+import java.util.Arrays;
+
+public class Carro {
+    // Atributos básicos da classe
+    private String modelo;
+    private double preco;
+
+    // Construtor
+    public Carro(String modelo, double preco) {
+        this.modelo = modelo;
+        this.preco = preco;
+    }
+
+    // Getters
+    public String getModelo() {
+        return modelo;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    // Representação textual do objeto
+    @Override
+    public String toString() {
+        return "Carro{" +
+                "modelo='" + modelo + '\'' +
+                ", preco=" + preco +
+                '}';
+    }
+
+    // Método para ordenar uma lista de carros por preço usando Insertion Sort
+    public static void ordenarPorPreco(Carro[] carros) {
+        for (int i = 1; i < carros.length; i++) {
+            Carro chave = carros[i];
+            int j = i - 1;
+
+            // Move os elementos maiores que a chave para a próxima posição
+            while (j >= 0 && carros[j].getPreco() > chave.getPreco()) {
+                carros[j + 1] = carros[j];
+                j--;
+            }
+            carros[j + 1] = chave;
+        }
+    }
+
+    // Método para realizar busca binária por preço
+    public static int buscarPorPreco(Carro[] carros, double preco) {
+        int inicio = 0;
+        int fim = carros.length - 1;
+
+        while (inicio <= fim) {
+            int meio = (inicio + fim) / 2;
+
+            if (carros[meio].getPreco() == preco) {
+                return meio; // Preço encontrado
+            } else if (carros[meio].getPreco() < preco) {
+                inicio = meio + 1; // Busca na metade superior
+            } else {
+                fim = meio - 1; // Busca na metade inferior
+            }
+        }
+        return -1; // Preço não encontrado
+    }
+
+    // Método principal para testar
+    public static void main(String[] args) {
+        // Lista de carros
+        Carro[] carros = {
+                new Carro("Corolla", 120000.0),
+                new Carro("Civic", 110000.0),
+                new Carro("Onix", 75000.0),
+                new Carro("Gol", 65000.0),
+                new Carro("Creta", 130000.0)
+        };
+
+        System.out.println("Lista original:");
+        System.out.println(Arrays.toString(carros));
+
+        // Ordenar carros por preço
+        ordenarPorPreco(carros);
+        System.out.println("\nLista ordenada por preço:");
+        System.out.println(Arrays.toString(carros));
+
+        // Buscar um carro por preço
+        double precoBusca = 75000.0;
+        int indice = buscarPorPreco(carros, precoBusca);
+        if (indice != -1) {
+            System.out.println("\nCarro encontrado: " + carros[indice]);
+        } else {
+            System.out.println("\nCarro com preço " + precoBusca + " não encontrado.");
+        }
+    }
+}
